@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diminished Value Calculator</title>
+    
+    <!-- EmailJS for email notifications -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
     <style>
         * {
             box-sizing: border-box;
@@ -33,62 +37,22 @@
             color: white;
             padding: 40px 30px;
             text-align: center;
-            position: relative;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
-            opacity: 0.1;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
         }
 
         .header h1 {
             margin: 0 0 10px 0;
             font-size: 2.25rem;
             font-weight: 700;
-            letter-spacing: -0.025em;
         }
 
         .header p {
             margin: 0;
             font-size: 1.125rem;
             opacity: 0.9;
-            font-weight: 400;
         }
 
         .form-content {
             padding: 40px 30px;
-        }
-
-        .trust-indicators {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 32px;
-            margin: 0 0 40px 0;
-            padding: 24px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .trust-item {
-            text-align: center;
-            color: #6b7280;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
 
         .form-section {
@@ -141,8 +105,6 @@
             font-weight: 500;
             color: #374151;
             font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
 
         input, select {
@@ -162,10 +124,6 @@
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        input:hover, select:hover {
-            border-color: #9ca3af;
-        }
-
         .damage-tiers {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -179,29 +137,18 @@
             padding: 20px;
             cursor: pointer;
             transition: all 0.2s ease;
-            position: relative;
             background: white;
+            position: relative;
         }
 
         .tier:hover {
             border-color: #3b82f6;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             transform: translateY(-1px);
         }
 
         .tier.selected {
             border-color: #1e40af;
             background: #eff6ff;
-            box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.1);
-        }
-
-        .tier input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            cursor: pointer;
         }
 
         .tier-header {
@@ -234,13 +181,15 @@
             line-height: 1.4;
         }
 
-        .calculate-section {
-            text-align: center;
-            margin: 40px 0;
-            padding: 32px;
-            background: #f8fafc;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
+        .tier input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            cursor: pointer;
         }
 
         .calculate-btn {
@@ -253,21 +202,14 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            display: block;
+            margin: 32px auto;
             min-width: 240px;
-            justify-content: center;
         }
 
         .calculate-btn:hover {
             background: #1d4ed8;
             transform: translateY(-1px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        .calculate-btn:active {
-            transform: translateY(0);
         }
 
         .results {
@@ -277,7 +219,6 @@
             border-radius: 12px;
             overflow: hidden;
             display: none;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         .results-header {
@@ -293,11 +234,6 @@
             font-weight: 600;
         }
 
-        .results-subtext {
-            opacity: 0.9;
-            font-size: 0.875rem;
-        }
-
         .value-display {
             padding: 32px 24px;
             text-align: center;
@@ -309,7 +245,6 @@
             font-weight: 700;
             color: #059669;
             margin: 0 0 16px 0;
-            letter-spacing: -0.025em;
         }
 
         .results-details {
@@ -325,11 +260,6 @@
             margin-bottom: 8px;
             background: #f8fafc;
             border-radius: 8px;
-            border-left: 3px solid #3b82f6;
-        }
-
-        .result-item:last-child {
-            margin-bottom: 0;
         }
 
         .result-label {
@@ -343,29 +273,14 @@
             color: #1f2937;
         }
 
-        .methodology {
-            margin-top: 16px;
-            padding: 16px;
-            background: #fffbeb;
-            border: 1px solid #fbbf24;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            color: #92400e;
-        }
-
-        .disclaimer {
-            margin-top: 32px;
-            padding: 20px 24px;
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            color: #475569;
-            line-height: 1.6;
-        }
-
-        .disclaimer strong {
-            color: #334155;
+        .debug-info {
+            background: #fee;
+            border: 1px solid #fcc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
         }
 
         @media (max-width: 768px) {
@@ -385,53 +300,51 @@
             .damage-tiers {
                 grid-template-columns: 1fr;
             }
-            
-            .trust-indicators {
-                flex-direction: column;
-                gap: 16px;
-            }
-            
-            .value-range {
-                font-size: 2rem;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 
+        🔧 INTEGRATION SETUP GUIDE
+        ========================
+        
+        1. GOOGLE SHEETS INTEGRATION (Lead Capture):
+           - Go to script.google.com
+           - Create new Apps Script project  
+           - Paste the Google Apps Script code (see setup guide)
+           - Deploy as web app, copy the URL
+           - Replace YOUR_GOOGLE_APPS_SCRIPT_ID in the code below
+        
+        2. MAILCHIMP INTEGRATION (Email Marketing):
+           Option A - Server Endpoint (Recommended):
+           - Create server endpoint at /api/mailchimp-subscribe
+           - Configure MAILCHIMP_ENDPOINT environment variable
+           
+           Option B - Direct Form (Simple):
+           - Get your MailChimp form action URL
+           - Replace YOUR_MAILCHIMP_USER_ID and YOUR_MAILCHIMP_LIST_ID in the fallback form
+        
+        3. EMAIL NOTIFICATIONS (Instant alerts):
+           - Go to emailjs.com and create account
+           - Set up email service and template
+           - Configure EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID
+        
+        4. SECURITY (Production):
+           - Set all API keys as environment variables
+           - Never commit real API keys to source control
+           
+        📋 The calculator works without any integrations configured!
+        Each integration will show helpful fallback messages if not set up.
+        -->
+        
         <div class="header">
-            <div class="header-content">
-                <div class="logo-container" style="margin-bottom: 20px;">
-                    <!-- 
-                    TO ADD YOUR MYFAIRCLAIM LOGO:
-                    
-                    OPTION 1 - Upload to your website:
-                    1. Upload your MyFairClaim logo to your website (e.g., /images/myfairclaim-logo.png)
-                    2. Replace "YOUR-LOGO-PATH-HERE" below with the actual path
-                    
-                    OPTION 2 - Base64 embedding:
-                    1. Go to https://www.base64-image.de/
-                    2. Upload your logo image
-                    3. Copy the result (starts with "data:image/png;base64,...")
-                    4. Replace "YOUR-LOGO-PATH-HERE" with the copied data URL
-                    -->
-                    <img src="YOUR-LOGO-PATH-HERE" 
-                         alt="MyFairClaim - Professional Diminished Value Assessments" 
-                         style="max-height: 80px; width: auto; margin-bottom: 10px;"
-                         onerror="this.style.display='none';">
-                </div>
-                <h1>Professional Diminished Value Assessment</h1>
-                <p>Industry-standard evaluation for insurance claims and legal proceedings</p>
-            </div>
+            <h1>Professional Diminished Value Assessment</h1>
+            <p>Industry-standard evaluation for insurance claims</p>
         </div>
 
         <div class="form-content">
-            <div class="trust-indicators">
-                <div class="trust-item">✓ Industry Standards</div>
-                <div class="trust-item">✓ Professional Grade</div>
-                <div class="trust-item">✓ Certified Methodology</div>
-                <div class="trust-item">✓ Insurance Accepted</div>
-            </div>
+            <div id="debug" class="debug-info">Debug: Page loading...</div>
 
             <form id="calculatorForm">
                 <div class="form-section">
@@ -440,21 +353,17 @@
                         <h3 class="section-title">Contact Information</h3>
                     </div>
                     
-                    <p style="margin-bottom: 20px; color: #6b7280; font-size: 0.875rem;">
-                        Please provide your contact information to receive your professional assessment:
-                    </p>
-                    
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="customerName">Full Name <span style="color: #dc2626;">*</span></label>
+                            <label for="customerName">Full Name *</label>
                             <input type="text" id="customerName" placeholder="Your full name" required>
                         </div>
                         <div class="form-group">
-                            <label for="customerEmail">Email Address <span style="color: #dc2626;">*</span></label>
+                            <label for="customerEmail">Email Address *</label>
                             <input type="email" id="customerEmail" placeholder="your.email@example.com" required>
                         </div>
                         <div class="form-group">
-                            <label for="customerPhone">Phone Number <span style="color: #dc2626;">*</span></label>
+                            <label for="customerPhone">Phone Number *</label>
                             <input type="tel" id="customerPhone" placeholder="(555) 123-4567" required>
                         </div>
                     </div>
@@ -494,73 +403,61 @@
                         <h3 class="section-title">Damage Assessment</h3>
                     </div>
                     
-                    <p style="margin-bottom: 20px; color: #6b7280; font-size: 0.875rem;">
-                        Select the tier that most accurately describes the extent of collision damage:
-                    </p>
-                    
                     <div class="damage-tiers">
-                        <div class="tier tier-1" data-value="1">
+                        <div class="tier tier-1" onclick="selectTier(1)">
                             <input type="radio" name="severity" value="1" required>
                             <div class="tier-header">
                                 <div class="tier-icon"></div>
                                 <div class="tier-name">Tier 1 - Minor Damage</div>
                             </div>
                             <div class="tier-description">
-                                Cosmetic damage only. Small dents, surface scratches, minor paint work. No structural impact.
+                                Cosmetic damage only. Small dents, surface scratches, minor paint work.
                             </div>
                         </div>
                         
-                        <div class="tier tier-2" data-value="2">
+                        <div class="tier tier-2" onclick="selectTier(2)">
                             <input type="radio" name="severity" value="2" required>
                             <div class="tier-header">
                                 <div class="tier-icon"></div>
                                 <div class="tier-name">Tier 2 - Moderate Damage</div>
                             </div>
                             <div class="tier-description">
-                                Body panel replacement required. Multiple components affected. Moderate paint and body work.
+                                Body panel replacement required. Multiple components affected.
                             </div>
                         </div>
                         
-                        <div class="tier tier-3" data-value="3">
+                        <div class="tier tier-3" onclick="selectTier(3)">
                             <input type="radio" name="severity" value="3" required>
                             <div class="tier-header">
                                 <div class="tier-icon"></div>
                                 <div class="tier-name">Tier 3 - Major Damage</div>
                             </div>
                             <div class="tier-description">
-                                Frame or structural damage. Multiple panel replacement. Extensive paint and alignment work required.
+                                Frame or structural damage. Multiple panel replacement required.
                             </div>
                         </div>
                         
-                        <div class="tier tier-4" data-value="4">
+                        <div class="tier tier-4" onclick="selectTier(4)">
                             <input type="radio" name="severity" value="4" required>
                             <div class="tier-header">
                                 <div class="tier-icon"></div>
                                 <div class="tier-name">Tier 4 - Severe Damage</div>
                             </div>
                             <div class="tier-description">
-                                Significant structural damage. Safety systems affected. Airbag deployment. Extensive reconstruction.
+                                Significant structural damage. Safety systems affected.
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="calculate-section">
-                    <button type="submit" class="calculate-btn">
-                        <span>📊</span>
-                        Calculate Diminished Value
-                    </button>
-                    <p style="font-size: 0.875rem; color: #6b7280; margin-top: 16px;">
-                        <strong>Contact information is required</strong> to receive your assessment results. 
-                        Your assessment will be automatically sent to our team for review.
-                    </p>
-                </div>
+                <button type="submit" class="calculate-btn">
+                    Calculate Diminished Value
+                </button>
             </form>
 
             <div id="results" class="results">
                 <div class="results-header">
                     <h3>Professional Assessment Complete</h3>
-                    <div class="results-subtext">Based on industry-standard methodology and current market data</div>
                 </div>
                 
                 <div class="value-display">
@@ -570,14 +467,478 @@
                 
                 <div class="results-details">
                     <div id="resultDetails"></div>
-                    
-                    <div class="methodology">
-                        <strong>Methodology:</strong> This assessment utilizes industry-standard diminished value calculations, 
-                        incorporating vehicle depreciation models, market value analysis, and damage severity adjustments 
-                        recognized by insurance carriers and legal professionals.
-                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="disclaimer">
-                <strong>Professional Disclaimer:</s
+    <script>
+        // IMMEDIATE DEBUG TEST
+        console.log("🔧 SCRIPT STARTING - Testing basic functionality");
+        document.getElementById('debug').textContent = "Debug: JavaScript is running!";
+
+        // INTEGRATION CONFIGURATION
+        // ✅ GOOGLE SHEETS CONFIGURED - Will save all assessment data
+        const GOOGLE_SHEETS_URL = window.ENV?.GOOGLE_SHEETS_URL || "https://script.google.com/macros/s/AKfycby934QwGxoDSZvcjA0WUTTtOvBsX1sbCdiItvluFdm8b0qjJPl8IrHOODZIKYW6ZagEEw/exec";
+        const MAILCHIMP_ENDPOINT = window.ENV?.MAILCHIMP_ENDPOINT || "/api/mailchimp-subscribe";
+        const EMAILJS_PUBLIC_KEY = window.ENV?.EMAILJS_PUBLIC_KEY || "YOUR_EMAILJS_PUBLIC_KEY";
+        const EMAILJS_SERVICE_ID = window.ENV?.EMAILJS_SERVICE_ID || "YOUR_EMAILJS_SERVICE_ID";
+        const EMAILJS_TEMPLATE_ID = window.ENV?.EMAILJS_TEMPLATE_ID || "YOUR_EMAILJS_TEMPLATE_ID";
+
+        // Initialize EmailJS if configured
+        if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== "YOUR_EMAILJS_PUBLIC_KEY") {
+            emailjs.init(EMAILJS_PUBLIC_KEY);
+            console.log("📧 EmailJS initialized");
+        }
+
+        // Set default year
+        document.getElementById('year').value = new Date().getFullYear();
+
+        // SIMPLE TIER SELECTION - Using inline onclick
+        function selectTier(tierNumber) {
+            console.log("🎯 Tier selected:", tierNumber);
+            document.getElementById('debug').textContent = `Debug: Selected Tier ${tierNumber}`;
+            
+            // Remove selected class from all tiers
+            document.querySelectorAll('.tier').forEach(function(tier) {
+                tier.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked tier
+            document.querySelector(`.tier-${tierNumber}`).classList.add('selected');
+            
+            // Check the radio button
+            document.querySelector(`input[name="severity"][value="${tierNumber}"]`).checked = true;
+            
+            console.log("✅ Tier selection completed");
+        }
+
+        // SIMPLE FORM SUBMISSION
+        document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log("📋 Form submitted");
+            
+            try {
+                // Get form values
+                const customerName = document.getElementById('customerName').value;
+                const customerEmail = document.getElementById('customerEmail').value;
+                const customerPhone = document.getElementById('customerPhone').value;
+                const year = parseInt(document.getElementById('year').value);
+                const make = document.getElementById('make').value;
+                const model = document.getElementById('model').value;
+                const mileage = parseInt(document.getElementById('mileage').value);
+                const severityElement = document.querySelector('input[name="severity"]:checked');
+                
+                console.log("📝 Form values:", {
+                    customerName, customerEmail, customerPhone,
+                    year, make, model, mileage,
+                    severity: severityElement ? severityElement.value : 'NONE'
+                });
+                
+                // Validate
+                if (!customerName || !customerEmail || !customerPhone || !year || !make || !model || !mileage || !severityElement) {
+                    alert('Please fill in all fields and select a damage tier.');
+                    return;
+                }
+                
+                const severity = parseInt(severityElement.value);
+                console.log("✅ Validation passed, calculating...");
+                
+                // SIMPLE CALCULATION
+                const result = calculateValue(year, make, model, mileage, severity, customerName, customerEmail, customerPhone);
+                console.log("🧮 Calculation result:", result);
+                
+                // SIMPLE DISPLAY
+                showResults(result);
+                
+                // INTEGRATION FEATURES - Run after successful calculation
+                console.log("🔗 Starting integrations...");
+                runIntegrations(result);
+                
+            } catch (error) {
+                console.error("❌ Error:", error);
+                alert('Error: ' + error.message);
+            }
+        });
+
+        function calculateValue(year, make, model, mileage, severity, customerName, customerEmail, customerPhone) {
+            console.log("🧮 Starting calculation...");
+            
+            const currentYear = new Date().getFullYear();
+            const age = currentYear - year;
+            
+            // Simple base values by make
+            const baseValues = {
+                'bmw': 50000, 'mercedes': 52000, 'audi': 48000, 'lexus': 45000, 'tesla': 55000,
+                'toyota': 32000, 'honda': 30000, 'ford': 35000, 'chevrolet': 33000, 'nissan': 29000,
+                'hyundai': 28000, 'kia': 27000, 'volkswagen': 34000, 'mazda': 31000, 'subaru': 32000
+            };
+            
+            let baseValue = baseValues[make.toLowerCase()] || 30000;
+            console.log("💰 Base value:", baseValue);
+            
+            // Simple depreciation: 15% per year
+            let currentValue = baseValue;
+            for (let i = 0; i < age; i++) {
+                currentValue = currentValue * 0.85;
+            }
+            currentValue = Math.max(currentValue, 3000); // Minimum value
+            
+            // Mileage adjustment
+            const expectedMileage = age * 12000;
+            if (mileage > expectedMileage) {
+                const excessMiles = mileage - expectedMileage;
+                const penalty = Math.min(0.25, excessMiles * 0.00002);
+                currentValue = currentValue * (1 - penalty);
+            }
+            
+            console.log("📈 Current value after depreciation:", currentValue);
+            
+            // Damage percentages
+            const damageRanges = {
+                1: { min: 0.08, max: 0.15, name: 'Minor' },
+                2: { min: 0.15, max: 0.25, name: 'Moderate' },
+                3: { min: 0.25, max: 0.40, name: 'Major' },
+                4: { min: 0.40, max: 0.60, name: 'Severe' }
+            };
+            
+            const damage = damageRanges[severity];
+            const minValue = Math.round(currentValue * damage.min);
+            const maxValue = Math.round(currentValue * damage.max);
+            
+            console.log("💥 Damage range:", damage.min, "to", damage.max);
+            console.log("💵 Final diminished value range:", minValue, "to", maxValue);
+            
+            return {
+                minValue: minValue,
+                maxValue: maxValue,
+                currentValue: Math.round(currentValue),
+                tierName: damage.name,
+                severity: severity,
+                vehicleAge: age,
+                year: year,
+                make: make,
+                model: model,
+                mileage: mileage,
+                customerName: customerName,
+                customerEmail: customerEmail,
+                customerPhone: customerPhone
+            };
+        }
+
+        function showResults(result) {
+            console.log("📊 Displaying results...");
+            
+            const formatCurrency = (amount) => {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(amount);
+            };
+            
+            // Show value range
+            document.getElementById('valueRange').textContent = 
+                formatCurrency(result.minValue) + ' - ' + formatCurrency(result.maxValue);
+            
+            // Show details
+            document.getElementById('resultDetails').innerHTML = 
+                '<div class="result-item"><span class="result-label">Vehicle</span><span class="result-value">' + 
+                result.year + ' ' + result.make + ' ' + result.model + '</span></div>' +
+                '<div class="result-item"><span class="result-label">Current Market Value</span><span class="result-value">' + 
+                formatCurrency(result.currentValue) + '</span></div>' +
+                '<div class="result-item"><span class="result-label">Damage Level</span><span class="result-value">Tier ' + 
+                result.severity + ' - ' + result.tierName + '</span></div>' +
+                '<div class="result-item"><span class="result-label">Vehicle Age</span><span class="result-value">' + 
+                result.vehicleAge + ' years</span></div>' +
+                '<div class="result-item"><span class="result-label">Assessment Date</span><span class="result-value">' + 
+                new Date().toLocaleDateString() + '</span></div>';
+            
+            // Show results section
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            
+            document.getElementById('debug').textContent = 
+                `Debug: Results displayed! Range: ${formatCurrency(result.minValue)} - ${formatCurrency(result.maxValue)}`;
+            
+            console.log("✅ Results displayed successfully!");
+        }
+
+        // INTEGRATION FEATURES
+        async function runIntegrations(result) {
+            console.log("🔗 Running integrations for:", result.customerEmail);
+            
+            // 1. Save to Google Sheets (most important - captures the lead)
+            try {
+                await saveToGoogleSheets(result);
+            } catch (error) {
+                console.log("❌ Google Sheets failed:", error);
+            }
+            
+            // 2. Add to MailChimp (for follow-up campaigns)
+            try {
+                await addToMailChimp(result);
+            } catch (error) {
+                console.log("❌ MailChimp failed:", error);
+            }
+            
+            // 3. Send email notification (if configured)
+            try {
+                await sendEmailNotification(result);
+            } catch (error) {
+                console.log("❌ Email notification failed:", error);
+            }
+            
+            console.log("✅ Integrations completed");
+        }
+
+        // GOOGLE SHEETS INTEGRATION
+        async function saveToGoogleSheets(result) {
+            console.log("📊 Saving to Google Sheets...");
+            
+            if (GOOGLE_SHEETS_URL.includes("YOUR_GOOGLE_APPS_SCRIPT_ID")) {
+                console.log("⚠️ Google Sheets not configured - skipping");
+                showNotification("⚠️ Google Sheets integration not configured", "warning");
+                return false;
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('customerName', result.customerName);
+                formData.append('customerEmail', result.customerEmail);
+                formData.append('customerPhone', result.customerPhone);
+                formData.append('year', result.year);
+                formData.append('make', result.make);
+                formData.append('model', result.model);
+                formData.append('mileage', result.mileage);
+                formData.append('damageInfo', `Tier ${result.severity} - ${result.tierName}`);
+                formData.append('currentValue', result.currentValue);
+                formData.append('minValue', result.minValue);
+                formData.append('maxValue', result.maxValue);
+                formData.append('timestamp', new Date().toISOString());
+
+                const response = await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    console.log("✅ Google Sheets save successful");
+                    showNotification("✅ Assessment data saved successfully", "success");
+                    return true;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                console.log("❌ Google Sheets error:", error);
+                showNotification("⚠️ Data backup failed - but assessment completed", "warning");
+                return false;
+            }
+        }
+
+        // MAILCHIMP INTEGRATION
+        async function addToMailChimp(result) {
+            console.log("📬 Adding to MailChimp...");
+            
+            if (MAILCHIMP_ENDPOINT === "/api/mailchimp-subscribe") {
+                console.log("⚠️ MailChimp endpoint not configured - showing fallback");
+                showMailChimpFallback(result);
+                return false;
+            }
+            
+            try {
+                const subscriberData = {
+                    email: result.customerEmail,
+                    firstName: result.customerName.split(' ')[0] || '',
+                    lastName: result.customerName.split(' ').slice(1).join(' ') || '',
+                    phone: result.customerPhone,
+                    vehicle: `${result.year} ${result.make} ${result.model}`,
+                    damage: `Tier ${result.severity} - ${result.tierName}`,
+                    minValue: result.minValue,
+                    maxValue: result.maxValue,
+                    currentValue: result.currentValue,
+                    mileage: result.mileage,
+                    assessment: new Date().toISOString(),
+                    priority: result.maxValue > 5000 ? 'High' : result.maxValue > 2000 ? 'Medium' : 'Low',
+                    vehicleAge: result.vehicleAge,
+                    isLuxury: ['bmw', 'mercedes', 'audi', 'lexus', 'porsche', 'tesla'].includes(result.make.toLowerCase())
+                };
+
+                const response = await fetch(MAILCHIMP_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(subscriberData)
+                });
+
+                if (response.ok) {
+                    console.log("✅ MailChimp integration successful");
+                    showNotification("📧 Added to our professional follow-up system!", "success");
+                    return true;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                console.log("❌ MailChimp error:", error);
+                showMailChimpFallback(result);
+                return false;
+            }
+        }
+
+        // MAILCHIMP FALLBACK (Direct signup form)
+        function showMailChimpFallback(result) {
+            console.log("📋 Showing MailChimp fallback signup");
+            
+            setTimeout(() => {
+                const fallbackDiv = document.createElement('div');
+                fallbackDiv.style.cssText = `
+                    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                    background: white; padding: 30px; border-radius: 12px; 
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 10000; 
+                    max-width: 400px; width: 90%; text-align: center;
+                    border: 3px solid #1e40af;
+                `;
+                
+                fallbackDiv.innerHTML = `
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #1e40af; margin: 0 0 10px 0;">📧 Stay Connected!</h3>
+                        <p style="color: #6b7280; margin: 0; font-size: 14px;">
+                            Get professional follow-up on your <strong>${result.year} ${result.make} ${result.model}</strong> assessment
+                            <br><small>Estimated value: ${result.minValue.toLocaleString()} - ${result.maxValue.toLocaleString()}</small>
+                        </p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; padding: 15px; background: #f0fdf4; border-radius: 8px;">
+                        <div style="font-weight: 600; color: #059669;">✓ Professional Review</div>
+                        <div style="font-size: 12px; color: #6b7280;">Expert analysis & documentation</div>
+                    </div>
+                    
+                    <!-- Replace with your actual MailChimp form action URL -->
+                    <form action="https://myfairclaim.us13.list-manage.com/subscribe/post" method="POST" target="_blank">
+                        <input type="hidden" name="u" value="YOUR_MAILCHIMP_USER_ID">
+                        <input type="hidden" name="id" value="YOUR_MAILCHIMP_LIST_ID">
+                        <input type="hidden" name="VEHICLE" value="${result.year} ${result.make} ${result.model}">
+                        <input type="hidden" name="DAMAGE" value="Tier ${result.severity}">
+                        <input type="hidden" name="MAXVALUE" value="${result.maxValue}">
+                        
+                        <input type="email" name="EMAIL" value="${result.customerEmail}" readonly 
+                               style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #d1d5db; border-radius: 6px; background: #f9fafb;">
+                        
+                        <button type="submit" style="width: 100%; padding: 12px; background: #1e40af; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-bottom: 10px;">
+                            📧 Get Professional Follow-Up
+                        </button>
+                    </form>
+                    
+                    <button onclick="this.parentElement.remove()" 
+                            style="background: none; border: none; color: #6b7280; cursor: pointer; font-size: 12px;">
+                        Skip for now
+                    </button>
+                `;
+                
+                document.body.appendChild(fallbackDiv);
+            }, 2000); // Show after 2 seconds
+        }
+
+        // EMAIL NOTIFICATION
+        async function sendEmailNotification(result) {
+            console.log("📧 Sending email notification...");
+            
+            if (typeof emailjs === 'undefined' || EMAILJS_PUBLIC_KEY === "YOUR_EMAILJS_PUBLIC_KEY") {
+                console.log("⚠️ EmailJS not configured - skipping");
+                return false;
+            }
+            
+            try {
+                const formatCurrency = (amount) => {
+                    return new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }).format(amount);
+                };
+
+                const emailParams = {
+                    to_email: 'support@myfairclaim.com',
+                    customer_name: result.customerName,
+                    customer_email: result.customerEmail,
+                    customer_phone: result.customerPhone,
+                    vehicle_info: `${result.year} ${result.make} ${result.model}`,
+                    mileage: result.mileage.toLocaleString() + ' miles',
+                    vehicle_age: result.vehicleAge + ' years',
+                    estimated_value: formatCurrency(result.currentValue),
+                    damage_tier: `Tier ${result.severity} - ${result.tierName}`,
+                    diminished_value_range: `${formatCurrency(result.minValue)} - ${formatCurrency(result.maxValue)}`,
+                    assessment_date: new Date().toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })
+                };
+
+                const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams, EMAILJS_PUBLIC_KEY);
+                console.log("✅ Email notification sent successfully");
+                showNotification("📧 Assessment sent to our team - expect contact within 24 hours", "success");
+                return true;
+                
+            } catch (error) {
+                console.log("❌ Email notification failed:", error);
+                showNotification("⚠️ Email notification failed - but assessment completed", "warning");
+                return false;
+            }
+        }
+
+        // NOTIFICATION SYSTEM
+        function showNotification(message, type = 'info') {
+            const colors = {
+                'success': '#10b981',
+                'warning': '#f59e0b', 
+                'error': '#ef4444',
+                'info': '#3b82f6'
+            };
+            
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; padding: 16px 24px;
+                background: ${colors[type]}; color: white; border-radius: 8px;
+                font-weight: 500; z-index: 1000; max-width: 350px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-size: 14px;
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            // Add CSS animation
+            if (!document.getElementById('notificationCSS')) {
+                const style = document.createElement('style');
+                style.id = 'notificationCSS';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 5000);
+        }
+
+        // Test that everything loaded
+        console.log("✅ Script loaded successfully with integrations. Google Sheets ACTIVE!");
+        document.getElementById('debug').textContent = "Debug: Ready with Google Sheets integration! Click a damage tier to test.";
+    </script>
+</body>
+</html>
