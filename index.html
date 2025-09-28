@@ -21,7 +21,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 700px;
             margin: 0 auto;
             background: white;
             border-radius: 12px;
@@ -32,7 +32,7 @@
         .header {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
             color: white;
-            padding: 20px 30px 15px 30px;
+            padding: 15px 40px 10px 40px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -72,7 +72,7 @@
         }
 
         .text-logo .logo-my {
-            font-size: 5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: #ffffff;
             letter-spacing: -0.02em;
@@ -80,7 +80,7 @@
         }
 
         .text-logo .logo-fair {
-            font-size: 5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: #60a5fa;
             letter-spacing: -0.02em;
@@ -88,7 +88,7 @@
         }
 
         .text-logo .logo-claim {
-            font-size: 5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: #ffffff;
             letter-spacing: -0.02em;
@@ -96,57 +96,57 @@
         }
 
         .logo-tagline {
-            font-size: 1.5rem;
+            font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
-            margin-top: 12px;
+            margin-top: 4px;
             letter-spacing: 0.05em;
             text-transform: uppercase;
             text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .form-content {
-            padding: 40px 30px;
+            padding: 20px 40px 40px 40px;
         }
 
         .form-section {
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .section-header {
             display: flex;
             align-items: center;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #e2e8f0;
         }
 
         .section-number {
             background: #1e40af;
             color: white;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.875rem;
-            margin-right: 12px;
+            font-size: 0.75rem;
+            margin-right: 10px;
         }
 
         .section-title {
             color: #1e293b;
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             font-weight: 600;
             margin: 0;
         }
 
         .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
         }
 
         .form-group {
@@ -180,9 +180,9 @@
 
         .damage-tiers {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
         }
 
         .tier {
@@ -257,7 +257,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             display: block;
-            margin: 32px auto;
+            margin: 24px auto;
             min-width: 240px;
         }
 
@@ -289,7 +289,7 @@
         }
 
         .value-display {
-            padding: 32px 24px;
+            padding: 24px 24px;
             text-align: center;
             background: #f0fdf4;
         }
@@ -302,7 +302,7 @@
         }
 
         .results-details {
-            padding: 24px;
+            padding: 20px;
             background: white;
         }
 
@@ -370,6 +370,154 @@
             color: #374151;
         }
 
+        /* EXIT INTENT POPUP STYLES */
+        .exit-intent-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .exit-intent-popup {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .exit-popup-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            color: white;
+            padding: 30px 30px 25px 30px;
+            text-align: center;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .exit-popup-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .exit-popup-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .exit-popup-content {
+            padding: 30px;
+        }
+
+        .exit-popup-form {
+            margin-bottom: 20px;
+        }
+
+        .exit-popup-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .exit-popup-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .exit-popup-btn {
+            width: 100%;
+            background: #1e40af;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .exit-popup-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .exit-popup-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .exit-popup-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .exit-popup-benefits {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .exit-popup-benefits li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 24px;
+            color: #374151;
+        }
+
+        .exit-popup-benefits li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .exit-popup-footer {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 15px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         @media (max-width: 768px) {
             .container {
                 margin: 0;
@@ -377,23 +525,44 @@
             }
             
             .header {
-                padding: 15px 20px 10px 20px;
+                padding: 10px 30px 8px 30px;
             }
             
             .header .logo-container img {
-                max-height: 360px !important;
+                max-height: 80px !important;
+            }
+            
+            .header h1 {
+                font-size: 1.25rem !important;
+            }
+            
+            .header p {
+                font-size: 0.75rem !important;
             }
             
             .form-content {
-                padding: 24px 20px;
+                padding: 15px 30px 20px 30px;
+            }
+            
+            .form-section {
+                margin-bottom: 20px;
+            }
+            
+            .section-header {
+                margin-bottom: 16px;
+                padding-bottom: 6px;
             }
             
             .form-row {
                 grid-template-columns: 1fr;
+                gap: 12px;
+                margin-bottom: 12px;
             }
             
             .damage-tiers {
                 grid-template-columns: 1fr;
+                gap: 10px;
+                margin-top: 12px;
             }
             
             .system-status {
@@ -407,15 +576,23 @@
             .text-logo .logo-my,
             .text-logo .logo-fair,
             .text-logo .logo-claim {
-                font-size: 4rem;
+                font-size: 2rem;
             }
             
             .logo-tagline {
+                font-size: 0.75rem;
+            }
+            
+            .exit-popup-header {
+                padding: 20px 20px 15px 20px;
+            }
+            
+            .exit-popup-title {
                 font-size: 1.25rem;
             }
             
-            .header h1 {
-                font-size: 1.75rem;
+            .exit-popup-content {
+                padding: 20px;
             }
         }
     </style>
@@ -454,15 +631,16 @@
         
         <div class="header">
             <div class="header-content">
-                <div class="logo-container" style="margin-bottom: 15px;">
+                <div class="logo-container" style="margin-bottom: 8px;">
                     <img src="https://myfacirclaim.github.io/diminished-value-calculator/My%20Fair%20Claims%20-%20Logo-01.png" 
                          alt="MyFairClaim - Professional Diminished Value Experts" 
-                         style="max-height: 480px; width: auto; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));"
+                         style="max-height: 120px; width: auto; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));"
                          onload="this.style.opacity='1';"
                          onerror="this.style.display='none'; showTextLogo();">
                 </div>
+                </div>
                 <h1>Professional Diminished Value Assessment</h1>
-                <p>Industry-standard evaluation for insurance claims and legal proceedings</p>
+                <p>Industry-standard evaluation for insurance claims</p>
             </div>
         </div>
 
@@ -593,6 +771,41 @@
         </div>
     </div>
 
+    <!-- Exit Intent Popup -->
+    <div class="exit-intent-overlay" id="exitIntentPopup">
+        <div class="exit-intent-popup">
+            <div class="exit-popup-header">
+                <button class="exit-popup-close" onclick="closeExitPopup()">&times;</button>
+                <h2 class="exit-popup-title">Wait! Don't Miss Your Free Assessment</h2>
+                <p class="exit-popup-subtitle">Get your diminished value estimate delivered to your inbox</p>
+            </div>
+            <div class="exit-popup-content">
+                <form class="exit-popup-form" onsubmit="submitExitPopupForm(event)">
+                    <input type="email" 
+                           class="exit-popup-input" 
+                           id="exitPopupEmail"
+                           placeholder="Enter your email address" 
+                           required>
+                    
+                    <button type="submit" class="exit-popup-btn">
+                        📧 Get My Free Assessment Guide
+                    </button>
+                </form>
+                
+                <ul class="exit-popup-benefits">
+                    <li>Free diminished value assessment guide</li>
+                    <li>Insurance claim tips from experts</li>
+                    <li>Step-by-step recovery process</li>
+                    <li>Maximize your claim value</li>
+                </ul>
+                
+                <div class="exit-popup-footer">
+                    No spam. Unsubscribe anytime. Trusted by thousands of vehicle owners.
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- System Status Indicator -->
     <div class="system-status" id="systemStatus">
         <div class="status-light" id="statusLight"></div>
@@ -629,7 +842,7 @@
             const logoContainer = document.querySelector('.logo-container');
             if (logoContainer) {
                 logoContainer.innerHTML = `
-                    <div class="text-logo" style="margin-bottom: 10px;">
+                    <div class="text-logo" style="margin-bottom: 5px;">
                         <span class="logo-my">My</span><span class="logo-fair">Fair</span><span class="logo-claim">Claim</span>
                         <div class="logo-tagline">Professional Diminished Value Experts</div>
                     </div>
