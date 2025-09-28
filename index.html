@@ -48,6 +48,41 @@
             opacity: 0.9;
         }
 
+        .text-logo {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .text-logo .logo-my {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .text-logo .logo-fair {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #60a5fa;
+            letter-spacing: -0.02em;
+        }
+
+        .text-logo .logo-claim {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-tagline {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            margin-top: 4px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
         .form-content {
             padding: 40px 30px;
         }
@@ -270,14 +305,47 @@
             color: #1f2937;
         }
 
-        .debug-info {
-            background: #fee;
-            border: 1px solid #fcc;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 12px;
+        .system-status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 1000;
+            border: 1px solid #e5e7eb;
+        }
+
+        .status-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef4444;
+            animation: pulse 2s infinite;
+        }
+
+        .status-light.green {
+            background: #10b981;
+        }
+
+        .status-light.yellow {
+            background: #f59e0b;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .status-text {
+            color: #374151;
         }
 
         @media (max-width: 768px) {
@@ -297,6 +365,24 @@
             .damage-tiers {
                 grid-template-columns: 1fr;
             }
+            
+            .system-status {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin: 10px 0;
+                justify-content: center;
+            }
+            
+            .text-logo .logo-my,
+            .text-logo .logo-fair,
+            .text-logo .logo-claim {
+                font-size: 2rem;
+            }
+            
+            .logo-tagline {
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -314,7 +400,11 @@
            - Direct integration with your MyFairClaim list
            - Custom fields capturing vehicle assessment data  
            - Lead priority tagging (High/Medium/Low)
-           - Replaces EmailJS for better deliverability
+           - Professional customer messaging
+        
+        ✅ MYFAIRCLAIM LOGO: 
+           - Live logo from GitHub repository
+           - Automatic fallback to text logo if needed
         
         📧 NOTIFICATIONS: MailChimp handles both:
            - Customer follow-up campaigns (automated)
@@ -324,18 +414,23 @@
            - No exposed API keys in client code
            - CORS-safe form submissions
         
-        📋 The calculator now captures complete lead profiles with:
+        📋 The calculator captures complete lead profiles with:
            Contact info + Vehicle details + Assessment data + Priority scoring
         -->
         
         <div class="header">
+            <div class="logo-container" style="margin-bottom: 20px;">
+                <img src="https://myfacirclaim.github.io/diminished-value-calculator/My%20Fair%20Claims%20-%20Logo-01.png" 
+                     alt="MyFairClaim - Professional Diminished Value Experts" 
+                     style="max-height: 80px; width: auto; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;"
+                     onload="this.style.opacity='1';"
+                     onerror="this.style.display='none'; showTextLogo();">
+            </div>
             <h1>Professional Diminished Value Assessment</h1>
             <p>Industry-standard evaluation for insurance claims</p>
         </div>
 
         <div class="form-content">
-            <div id="debug" class="debug-info">Debug: Page loading...</div>
-
             <form id="calculatorForm">
                 <div class="form-section">
                     <div class="section-header">
@@ -462,10 +557,16 @@
         </div>
     </div>
 
+    <!-- System Status Indicator -->
+    <div class="system-status" id="systemStatus">
+        <div class="status-light" id="statusLight"></div>
+        <div class="status-text" id="statusText">System Loading...</div>
+    </div>
+
     <script>
         // IMMEDIATE DEBUG TEST
         console.log("🔧 SCRIPT STARTING - Testing basic functionality");
-        document.getElementById('debug').textContent = "Debug: JavaScript is running!";
+        updateSystemStatus('loading', 'Initializing systems...');
 
         // INTEGRATION CONFIGURATION
         // ✅ GOOGLE SHEETS CONFIGURED - Will save all assessment data
@@ -487,10 +588,48 @@
         // Set default year
         document.getElementById('year').value = new Date().getFullYear();
 
+        // LOGO FALLBACK FUNCTION
+        function showTextLogo() {
+            const logoContainer = document.querySelector('.logo-container');
+            if (logoContainer) {
+                logoContainer.innerHTML = `
+                    <div class="text-logo">
+                        <span class="logo-my">My</span><span class="logo-fair">Fair</span><span class="logo-claim">Claim</span>
+                        <div class="logo-tagline">Professional Diminished Value Experts</div>
+                    </div>
+                `;
+            }
+        }
+
+        // SYSTEM STATUS INDICATOR
+        function updateSystemStatus(status, message) {
+            const statusLight = document.getElementById('statusLight');
+            const statusText = document.getElementById('statusText');
+            
+            if (statusLight && statusText) {
+                // Remove existing classes
+                statusLight.className = 'status-light';
+                
+                switch(status) {
+                    case 'loading':
+                        statusLight.classList.add('yellow');
+                        break;
+                    case 'ready':
+                        statusLight.classList.add('green');
+                        break;
+                    case 'error':
+                        statusLight.classList.add('red');
+                        break;
+                }
+                
+                statusText.textContent = message;
+            }
+        }
+
         // SIMPLE TIER SELECTION - Using inline onclick
         function selectTier(tierNumber) {
             console.log("🎯 Tier selected:", tierNumber);
-            document.getElementById('debug').textContent = `Debug: Selected Tier ${tierNumber}`;
+            updateSystemStatus('ready', `Tier ${tierNumber} selected - Ready to calculate`);
             
             // Remove selected class from all tiers
             document.querySelectorAll('.tier').forEach(function(tier) {
@@ -652,8 +791,7 @@
             document.getElementById('results').style.display = 'block';
             document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
             
-            document.getElementById('debug').textContent = 
-                `Debug: Results displayed! Range: ${formatCurrency(result.minValue)} - ${formatCurrency(result.maxValue)}`;
+            updateSystemStatus('ready', `Assessment complete - Range: ${formatCurrency(result.minValue)} - ${formatCurrency(result.maxValue)}`);
             
             console.log("✅ Results displayed successfully!");
         }
@@ -711,14 +849,14 @@
 
                 if (response.ok) {
                     console.log("✅ Google Sheets save successful");
-                    showNotification("✅ Assessment data saved successfully", "success");
+                    showNotification("✅ Thank you! Your assessment has been received by MyFairClaim.", "success");
                     return true;
                 } else {
                     throw new Error(`HTTP ${response.status}`);
                 }
             } catch (error) {
                 console.log("❌ Google Sheets error:", error);
-                showNotification("⚠️ Data backup failed - but assessment completed", "warning");
+                showNotification("⚠️ Assessment completed - Our team will contact you shortly.", "warning");
                 return false;
             }
         }
@@ -783,7 +921,7 @@
                 }, 2000);
 
                 console.log("✅ MailChimp submission successful");
-                showNotification("📧 Added to MailChimp - you'll receive follow-up emails!", "success");
+                showNotification("📧 Thank you! A MyFairClaim specialist will contact you within 24 hours.", "success");
                 return true;
 
             } catch (error) {
