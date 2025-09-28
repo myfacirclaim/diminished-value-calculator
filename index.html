@@ -815,7 +815,13 @@
     <script>
         // IMMEDIATE DEBUG TEST
         console.log("🔧 SCRIPT STARTING - Testing basic functionality");
-        updateSystemStatus('loading', 'Initializing systems...');
+        
+        // Try to update system status, but don't fail if it errors
+        try {
+            updateSystemStatus('loading', 'Initializing systems...');
+        } catch (e) {
+            console.log('⚠️ System status not available yet, continuing...');
+        }
 
         // INTEGRATION CONFIGURATION
         // ✅ GOOGLE SHEETS CONFIGURED - Will save all assessment data
@@ -850,35 +856,45 @@
             }
         }
 
-        // SYSTEM STATUS INDICATOR
+        // SYSTEM STATUS INDICATOR - WITH NULL CHECKS
         function updateSystemStatus(status, message) {
             const statusLight = document.getElementById('statusLight');
             const statusText = document.getElementById('statusText');
             
-            if (statusLight && statusText) {
-                // Remove existing classes
-                statusLight.className = 'status-light';
-                
-                switch(status) {
-                    case 'loading':
-                        statusLight.classList.add('yellow');
-                        break;
-                    case 'ready':
-                        statusLight.classList.add('green');
-                        break;
-                    case 'error':
-                        statusLight.classList.add('red');
-                        break;
-                }
-                
-                statusText.textContent = message;
+            // Add null checks to prevent errors
+            if (!statusLight || !statusText) {
+                console.log('⚠️ System status elements not found, status:', message);
+                return;
             }
+            
+            // Remove existing classes
+            statusLight.className = 'status-light';
+            
+            switch(status) {
+                case 'loading':
+                    statusLight.classList.add('yellow');
+                    break;
+                case 'ready':
+                    statusLight.classList.add('green');
+                    break;
+                case 'error':
+                    statusLight.classList.add('red');
+                    break;
+            }
+            
+            statusText.textContent = message;
         }
 
         // SIMPLE TIER SELECTION - Using inline onclick
         function selectTier(tierNumber) {
             console.log("🎯 Tier selected:", tierNumber);
-            updateSystemStatus('ready', `Tier ${tierNumber} selected - Ready to calculate`);
+            
+            // Try to update system status, but don't fail if it errors
+            try {
+                updateSystemStatus('ready', `Tier ${tierNumber} selected - Ready to calculate`);
+            } catch (e) {
+                console.log('⚠️ System status update failed, but tier selection still works');
+            }
             
             // Remove selected class from all tiers
             document.querySelectorAll('.tier').forEach(function(tier) {
@@ -886,10 +902,16 @@
             });
             
             // Add selected class to clicked tier
-            document.querySelector(`.tier-${tierNumber}`).classList.add('selected');
+            const selectedTier = document.querySelector(`.tier-${tierNumber}`);
+            if (selectedTier) {
+                selectedTier.classList.add('selected');
+            }
             
             // Check the radio button
-            document.querySelector(`input[name="severity"][value="${tierNumber}"]`).checked = true;
+            const radioButton = document.querySelector(`input[name="severity"][value="${tierNumber}"]`);
+            if (radioButton) {
+                radioButton.checked = true;
+            }
             
             console.log("✅ Tier selection completed");
         }
@@ -1366,9 +1388,136 @@
             }
         }
 
+        // EXIT INTENT FUNCTIONALITY
+        let exitIntentShown = false;
+        let mouseLeaveCount = 0;
+
+        // Detect when mouse leaves viewport (exit intent)
+        document.addEventListener('mouseleave', function(e) {
+            // Only trigger if mouse is leaving from the top of the page
+            if (e.clientY <= 0 && !exitIntentShown) {
+                mouseLeaveCount++;
+                
+                // Show popup after 2nd attempt to leave (less annoying)
+                if (mouseLeaveCount >= 2) {
+                    showExitIntentPopup();
+                }
+            }
+        });
+
+        // Show exit intent popup
+        function showExitIntentPopup() {
+            if (exitIntentShown) return;
+            
+            exitIntentShown = true;
+            console.log('🚪 Exit intent detected - showing popup');
+            
+            const popup = document.getElementById('exitIntentPopup');
+            if (popup) {
+                popup.style.display = 'flex';
+                
+                // Focus on email input
+                setTimeout(() => {
+                    const emailInput = document.getElementById('exitPopupEmail');
+                    if (emailInput) emailInput.focus();
+                }, 300);
+            }
+        }
+
+        // Close exit intent popup
+        function closeExitPopup() {
+            console.log('❌ Exit popup closed');
+            const popup = document.getElementById('exitIntentPopup');
+            if (popup) {
+                popup.style.display = 'none';
+            }
+        }
+
+        // Handle exit popup form submission
+        async function submitExitPopupForm(event) {
+            event.preventDefault();
+            console.log('📧 Exit popup form submitted');
+            
+            const emailInput = document.getElementById('exitPopupEmail');
+            const email = emailInput ? emailInput.value.trim() : '';
+            
+            if (!email) {
+                alert('Please enter your email address');
+                return;
+            }
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            try {
+                // Add to MailChimp
+                await addExitIntentToMailChimp(email);
+                
+                // Show success message
+                const popup = document.getElementById('exitIntentPopup');
+                if (popup) {
+                    popup.innerHTML = `
+                        <div class="exit-intent-popup">
+                            <div class="exit-popup-header">
+                                <h2 class="exit-popup-title">Thank You!</h2>
+                                <p class="exit-popup-subtitle">Your free assessment guide is on the way</p>
+                            </div>
+                            <div class="exit-popup-content">
+                                <div style="text-align: center; padding: 20px;">
+                                    <div style="font-size: 48px; margin-bottom: 16px;">✅</div>
+                                    <p style="color: #059669; font-weight: 600; margin-bottom: 8px;">
+                                        Assessment guide sent to ${email}
+                                    </p>
+                                    <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px;">
+                                        Check your inbox (and spam folder) for your free diminished value guide.
+                                    </p>
+                                    <button onclick="closeExitPopup()" class="exit-popup-btn">
+                                        Continue to Calculator
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Auto-close after 5 seconds
+                    setTimeout(() => {
+                        closeExitPopup();
+                    }, 5000);
+                }
+                
+                showNotification('📧 Free assessment guide sent to your email!', 'success');
+                
+            } catch (error) {
+                console.error('❌ Exit popup submission failed:', error);
+                alert('Sorry, there was an error. Please try again or contact us directly.');
+            }
+        }
+
+        // Close popup when clicking outside
+        document.addEventListener('click', function(e) {
+            const popup = document.getElementById('exitIntentPopup');
+            const popupContent = document.querySelector('.exit-intent-popup');
+            
+            if (popup && popup.style.display === 'flex' && 
+                !popupContent.contains(e.target)) {
+                closeExitPopup();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeExitPopup();
+            }
+        });
+
         // Test that everything loaded
         console.log("✅ Script loaded successfully with integrations. Google Sheets ACTIVE!");
-        document.getElementById('debug').textContent = "Debug: Ready with Google Sheets integration! Click a damage tier to test.";
+        console.log("🚪 Exit intent functionality enabled - move mouse to top of page to test");
     </script>
 </body>
 </html>
