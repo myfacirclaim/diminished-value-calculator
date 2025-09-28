@@ -954,6 +954,10 @@
                 // SIMPLE DISPLAY
                 showResults(result);
                 
+                // Mark form as completed - disable exit intent
+                formCompleted = true;
+                console.log("✅ Form completed - exit intent disabled");
+                
                 // INTEGRATION FEATURES - Run after successful calculation
                 console.log("🔗 Starting integrations...");
                 runIntegrations(result);
@@ -1045,18 +1049,11 @@
             document.getElementById('valueRange').textContent = 
                 formatCurrency(result.minValue) + ' - ' + formatCurrency(result.maxValue);
             
-            // Show details
+            // Show simplified details - removed Vehicle, Current Market Value, Damage Level, Vehicle Age, and Assessment Date
             document.getElementById('resultDetails').innerHTML = 
-                '<div class="result-item"><span class="result-label">Vehicle</span><span class="result-value">' + 
-                result.year + ' ' + result.make + ' ' + result.model + '</span></div>' +
-                '<div class="result-item"><span class="result-label">Current Market Value</span><span class="result-value">' + 
-                formatCurrency(result.currentValue) + '</span></div>' +
-                '<div class="result-item"><span class="result-label">Damage Level</span><span class="result-value">Tier ' + 
-                result.severity + ' - ' + result.tierName + '</span></div>' +
-                '<div class="result-item"><span class="result-label">Vehicle Age</span><span class="result-value">' + 
-                result.vehicleAge + ' years</span></div>' +
-                '<div class="result-item"><span class="result-label">Assessment Date</span><span class="result-value">' + 
-                new Date().toLocaleDateString() + '</span></div>';
+                '<div style="text-align: center; padding: 20px; color: #059669; font-weight: 500;">' +
+                'Professional assessment complete. A MyFairClaim specialist will contact you within 24 hours to discuss your claim options.' +
+                '</div>';
             
             // Show results section
             document.getElementById('results').style.display = 'block';
@@ -1351,6 +1348,51 @@
             }, 5000);
         }
 
+        // GOOGLE SHEETS INTEGRATION FOR EXIT INTENT
+        async function saveExitIntentToGoogleSheets(email) {
+            console.log("📊 Saving exit intent email to Google Sheets...");
+            
+            if (GOOGLE_SHEETS_URL.includes("YOUR_GOOGLE_APPS_SCRIPT_ID")) {
+                console.log("⚠️ Google Sheets not configured - skipping");
+                return false;
+            }
+            
+            try {
+                const formData = new FormData();
+                formData.append('customerEmail', email);
+                formData.append('leadSource', 'Exit Intent Popup');
+                formData.append('leadType', 'Email Only');
+                formData.append('timestamp', new Date().toISOString());
+                
+                // Mark as partial lead - no vehicle info yet
+                formData.append('customerName', 'Exit Intent Lead');
+                formData.append('customerPhone', 'Not provided');
+                formData.append('year', '');
+                formData.append('make', '');
+                formData.append('model', '');
+                formData.append('mileage', '');
+                formData.append('damageInfo', 'Exit Intent - No Assessment');
+                formData.append('currentValue', '');
+                formData.append('minValue', '');
+                formData.append('maxValue', '');
+
+                const response = await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    console.log("✅ Exit intent email saved to Google Sheets");
+                    return true;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                console.log("❌ Google Sheets error for exit intent:", error);
+                return false;
+            }
+        }
+
         async function addExitIntentToMailChimp(email) {
             console.log('📧 Adding exit intent email to MailChimp:', email);
             
@@ -1391,11 +1433,12 @@
         // EXIT INTENT FUNCTIONALITY
         let exitIntentShown = false;
         let mouseLeaveCount = 0;
+        let formCompleted = false; // Track if user completed the form
 
         // Detect when mouse leaves viewport (exit intent)
         document.addEventListener('mouseleave', function(e) {
-            // Only trigger if mouse is leaving from the top of the page
-            if (e.clientY <= 0 && !exitIntentShown) {
+            // Only trigger if mouse is leaving from the top of the page AND form not completed
+            if (e.clientY <= 0 && !exitIntentShown && !formCompleted) {
                 mouseLeaveCount++;
                 
                 // Show popup after 2nd attempt to leave (less annoying)
@@ -1457,6 +1500,9 @@
                 // Add to MailChimp
                 await addExitIntentToMailChimp(email);
                 
+                // Also save to Google Sheets for complete lead tracking
+                await saveExitIntentToGoogleSheets(email);
+                
                 // Show success message
                 const popup = document.getElementById('exitIntentPopup');
                 if (popup) {
@@ -1517,7 +1563,7 @@
 
         // Test that everything loaded
         console.log("✅ Script loaded successfully with integrations. Google Sheets ACTIVE!");
-        console.log("🚪 Exit intent functionality enabled - move mouse to top of page to test");
+        console.log("🚪 Exit intent functionality enabled - automatically disables after form completion");
     </script>
 </body>
 </html>
