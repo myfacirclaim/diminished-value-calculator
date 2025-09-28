@@ -382,6 +382,16 @@
             background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 10%, #ffffff 100%);
         }
 
+        .report-quick {
+            border-color: #f56565;
+            background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 10%, #ffffff 100%);
+        }
+
+        .report-quick:hover {
+            border-color: #e53e3e;
+            background: linear-gradient(135deg, #fbb6ce 0%, #f687b3 10%, #ffffff 100%);
+        }
+
         .report-title {
             font-weight: 700;
             font-size: 1.25rem;
@@ -466,7 +476,7 @@
             border-radius: 16px;
             max-width: 500px;
             width: 90%;
-            max-height: 90vh;
+            max-height: 75vh;
             overflow-y: auto;
             position: relative;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
@@ -474,40 +484,40 @@
         }
 
         .exit-popup-header {
-            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            background: linear-gradient(135deg, #2b6cb0 0%, #3182ce 100%);
             color: white;
-            padding: 30px 30px 25px 30px;
+            padding: 16px 20px 14px 20px;
             text-align: center;
             border-radius: 16px 16px 0 0;
         }
 
         .exit-popup-title {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            margin: 0 0 8px 0;
+            margin: 0 0 4px 0;
         }
 
         .exit-popup-subtitle {
-            font-size: 1rem;
+            font-size: 0.85rem;
             opacity: 0.9;
             margin: 0;
         }
 
         .exit-popup-content {
-            padding: 30px;
+            padding: 16px;
         }
 
         .exit-popup-form {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .exit-popup-input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 16px;
             border: 2px solid #d1d5db;
             border-radius: 8px;
             font-size: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             transition: border-color 0.2s;
         }
 
@@ -518,7 +528,7 @@
 
         .exit-popup-btn {
             width: 100%;
-            background: #1e40af;
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
             color: white;
             padding: 14px 20px;
             border: none;
@@ -527,11 +537,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
         }
 
         .exit-popup-btn:hover {
-            background: #1d4ed8;
+            background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
             transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
         }
 
         .exit-popup-close {
@@ -575,6 +587,7 @@
             left: 0;
             color: #10b981;
             font-weight: bold;
+            font-size: 0.8rem;
         }
 
         .exit-popup-footer {
@@ -867,36 +880,74 @@
         </div>
     </div>
 
+    <!-- Corporate Footer -->
+    <footer style="background: linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #4a5568 100%); color: white; padding: 40px 20px 20px 20px; margin-top: 40px;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 30px;">
+                <div>
+                    <h4 style="color: white; margin: 0 0 16px 0; font-size: 1.125rem; font-weight: 600;">MyFairClaim</h4>
+                    <p style="color: #a0aec0; font-size: 0.875rem; line-height: 1.6; margin: 0 0 16px 0;">
+                        Leading diminished value recovery specialists helping vehicle owners secure fair compensation nationwide.
+                    </p>
+                    <div style="color: #a0aec0; font-size: 0.875rem;">
+                        <div style="margin-bottom: 8px;">📧 <a href="mailto:support@myfairclaim.com" style="color: #63b3ed; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#63b3ed'">support@myfairclaim.com</a></div>
+                        <div style="margin-bottom: 8px;">📞 <a href="tel:1-877-503-3247" style="color: #63b3ed; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#63b3ed'">1-877-503-FAIR</a></div>
+                        <div>🌐 <a href="https://www.myfairclaim.com" target="_blank" style="color: #63b3ed; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#63b3ed'">www.myfairclaim.com</a></div>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; margin: 0 0 16px 0; font-size: 1.125rem; font-weight: 600;">Our Services</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; color: #a0aec0; font-size: 0.875rem; line-height: 1.8;">
+                        <li>• Diminished Value Assessments</li>
+                        <li>• Estimate Review</li>
+                        <li>• Appraisal Clause</li>
+                        <li>• Negotiation Support</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: white; margin: 0 0 16px 0; font-size: 1.125rem; font-weight: 600;">Recovery Stats</h4>
+                    <div style="color: #a0aec0; font-size: 0.875rem; line-height: 1.8;">
+                        <div style="margin-bottom: 8px;"><strong style="color: #63b3ed;">$5M+</strong> Recovered for Clients</div>
+                        <div style="margin-bottom: 8px;"><strong style="color: #63b3ed;">2,500+</strong> Successful Claims</div>
+                        <div style="margin-bottom: 8px;"><strong style="color: #63b3ed;">97%</strong> Client Satisfaction</div>
+                        <div><strong style="color: #63b3ed;">All 50</strong> States Served</div>
+                    </div>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #4a5568; padding-top: 20px; text-align: center; color: #a0aec0; font-size: 0.8rem;">
+                © 2025 MyFairClaim. All rights reserved. | Licensed • Bonded • Insured | Helping accident victims recover fair compensation all across the United States.
+            </div>
+        </div>
+    </footer>
+
     <!-- Exit Intent Popup -->
     <div class="exit-intent-overlay" id="exitIntentPopup">
         <div class="exit-intent-popup">
             <div class="exit-popup-header">
                 <button class="exit-popup-close" onclick="closeExitPopup()">&times;</button>
-                <h2 class="exit-popup-title">Don't Leave Money on the Table</h2>
-                <p class="exit-popup-subtitle">Get your free recovery guide and claim what you're owed</p>
+                <h2 class="exit-popup-title">We'll Help You When You're Ready</h2>
+                <p class="exit-popup-subtitle">Sign up now and we'll guide you through your recovery</p>
             </div>
             <div class="exit-popup-content">
                 <form class="exit-popup-form" onsubmit="submitExitPopupForm(event)">
                     <input type="email" 
                            class="exit-popup-input" 
                            id="exitPopupEmail"
-                           placeholder="Enter your email address" 
+                           placeholder="Enter your email to stay connected" 
                            required>
                     
                     <button type="submit" class="exit-popup-btn">
-                        Get My Recovery Rights Guide
+                        Sign Up Now
                     </button>
                 </form>
                 
                 <ul class="exit-popup-benefits">
-                    <li>Free vehicle value recovery guide</li>
-                    <li>Know your rights after an accident</li>
-                    <li>Proven strategies to maximize compensation</li>
-                    <li>Don't let insurance companies underpay you</li>
+                    <li>Expert guidance when you're ready to proceed</li>
+                    <li>Professional support throughout your recovery</li>
                 </ul>
                 
                 <div class="exit-popup-footer">
-                    No spam. Unsubscribe anytime. Trusted by thousands of vehicle owners.
+                    We're here to help you recover what you're owed, when you're ready.
                 </div>
             </div>
         </div>
@@ -1020,6 +1071,9 @@
                 formCompleted = true;
                 console.log("✅ Form completed - exit intent disabled");
                 
+                // Start post-submission timer (60 seconds)
+                startPostSubmissionTimer();
+                
                 // INTEGRATION FEATURES - Run after successful calculation
                 console.log("🔗 Starting integrations...");
                 runIntegrations(result);
@@ -1120,7 +1174,7 @@
                 '</div>' +
                 '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px;">' +
                 '<a href="#quick-report" class="report-button report-quick" onclick="handleReportClick(\'quick\')">' +
-                '<div class="report-title">Professional Recovery Report</div>' +
+                '<div class="report-title">Quick Report</div>' +
                 '<div class="report-description">Insurance-grade documentation to secure your claim</div>' +
                 '<div class="report-features">' +
                 '<div class="feature-item">• Comprehensive market value analysis</div>' +
@@ -1132,10 +1186,10 @@
                 '<div class="report-cta">Secure My Recovery →</div>' +
                 '</a>' +
                 '<a href="#deluxe-report" class="report-button report-deluxe" onclick="handleReportClick(\'deluxe\')">' +
-                '<div class="report-title">Complete Recovery Solution</div>' +
+                '<div class="report-title">Deluxe Report</div>' +
                 '<div class="report-description">Full-service advocacy for maximum compensation</div>' +
                 '<div class="report-features">' +
-                '<div class="feature-item">• Everything in Professional Report PLUS:</div>' +
+                '<div class="feature-item">• Everything in Quick Report PLUS:</div>' +
                 '<div class="feature-item">• Expert witness testimony support</div>' +
                 '<div class="feature-item">• Strategic negotiation guidance</div>' +
                 '<div class="feature-item">• Appeals and dispute resolution</div>' +
@@ -1196,16 +1250,14 @@
                 // Example: window.open('https://myfairclaim.com/quick-report?source=calculator', '_blank');
                 // Or redirect: window.location.href = 'https://myfairclaim.com/quick-report';
                 
-                showNotification('Professional Recovery Report - Our specialist will contact you to secure your compensation', 'info');
-                console.log('Professional Recovery Report: Documentation service requested');
+                console.log('Quick Report: Documentation service requested');
                 
             } else if (reportType === 'deluxe') {
                 // TODO: Replace with your actual Deluxe Report product page URL  
                 // Example: window.open('https://myfairclaim.com/deluxe-report?source=calculator', '_blank');
                 // Or redirect: window.location.href = 'https://myfairclaim.com/deluxe-report';
                 
-                showNotification('Complete Recovery Solution - Our specialist will contact you to maximize your claim', 'info');
-                console.log('Complete Recovery Solution: Full advocacy service requested');
+                console.log('Deluxe Report: Full advocacy service requested');
             }
             
             // Optional: Track which report type was clicked (useful for conversion tracking)
@@ -1249,14 +1301,12 @@
 
                 if (response.ok) {
                     console.log("✅ Google Sheets save successful");
-                    showNotification("Thank you! Your assessment has been received by MyFairClaim.", "success");
                     return true;
                 } else {
                     throw new Error(`HTTP ${response.status}`);
                 }
             } catch (error) {
                 console.log("❌ Google Sheets error:", error);
-                showNotification("Assessment completed - Our team will contact you shortly.", "warning");
                 return false;
             }
         }
@@ -1326,7 +1376,6 @@
 
             } catch (error) {
                 console.log("❌ MailChimp error:", error);
-                showMailChimpFallback(result);
                 return false;
             }
         }
@@ -1347,16 +1396,16 @@
                 
                 fallbackDiv.innerHTML = `
                     <div style="margin-bottom: 20px;">
-                        <h3 style="color: #1e40af; margin: 0 0 10px 0;">📧 Stay Connected!</h3>
+                        <h3 style="color: #1e40af; margin: 0 0 10px 0;">⚠️ Don't Miss Your Settlement!</h3>
                         <p style="color: #6b7280; margin: 0; font-size: 14px;">
-                            Get professional follow-up on your <strong>${result.year} ${result.make} ${result.model}</strong> assessment
-                            <br><small>Estimated value: ${result.minValue.toLocaleString()} - ${result.maxValue.toLocaleString()}</small>
+                            Secure compensation for your <strong>${result.year} ${result.make} ${result.model}</strong>
+                            <br><small>Estimated lost value: ${result.minValue.toLocaleString()} - ${result.maxValue.toLocaleString()}</small>
                         </p>
                     </div>
                     
-                    <div style="margin-bottom: 20px; padding: 15px; background: #f0fdf4; border-radius: 8px;">
-                        <div style="font-weight: 600; color: #059669;">✓ Professional Review</div>
-                        <div style="font-size: 12px; color: #6b7280;">Expert analysis & documentation</div>
+                    <div style="margin-bottom: 20px; padding: 15px; background: #fef2f2; border-radius: 8px; border: 1px solid #fca5a5;">
+                        <div style="font-weight: 600; color: #dc2626;">⏰ Time-Sensitive Claim</div>
+                        <div style="font-size: 12px; color: #6b7280;">Don't let insurance companies keep what's yours</div>
                     </div>
                     
                     <!-- Replace with your actual MailChimp form action URL -->
@@ -1370,14 +1419,14 @@
                         <input type="email" name="EMAIL" value="${result.customerEmail}" readonly 
                                style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #d1d5db; border-radius: 6px; background: #f9fafb;">
                         
-                        <button type="submit" style="width: 100%; padding: 12px; background: #1e40af; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-bottom: 10px;">
-                            Get Professional Follow-Up
+                        <button type="submit" style="width: 100%; padding: 12px; background: #dc2626; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-bottom: 10px;">
+                            Don't Miss Your Settlement
                         </button>
                     </form>
                     
                     <button onclick="this.parentElement.remove()" 
                             style="background: none; border: none; color: #6b7280; cursor: pointer; font-size: 12px;">
-                        Skip for now
+                        I'll risk missing my compensation
                     </button>
                 `;
                 
@@ -1566,9 +1615,9 @@
             }, 5000);
         }
 
-        // GOOGLE SHEETS INTEGRATION FOR EXIT INTENT
+        // GOOGLE SHEETS INTEGRATION FOR EXIT INTENT (SUPPORTIVE APPROACH)
         async function saveExitIntentToGoogleSheets(email) {
-            console.log("📊 Saving exit intent email to Google Sheets...");
+            console.log("📊 Saving supportive exit intent signup to Google Sheets...");
             
             if (GOOGLE_SHEETS_URL.includes("YOUR_GOOGLE_APPS_SCRIPT_ID")) {
                 console.log("⚠️ Google Sheets not configured - skipping");
@@ -1578,18 +1627,18 @@
             try {
                 const formData = new FormData();
                 formData.append('customerEmail', email);
-                formData.append('leadSource', 'Exit Intent Popup');
-                formData.append('leadType', 'Email Only');
+                formData.append('leadSource', 'Exit Intent - Ready When You Are');
+                formData.append('leadType', 'Email Only - Supportive Approach');
                 formData.append('timestamp', new Date().toISOString());
                 
                 // Mark as partial lead - no vehicle info yet
-                formData.append('customerName', 'Exit Intent Lead');
+                formData.append('customerName', 'Exit Intent - Supportive Lead');
                 formData.append('customerPhone', 'Not provided');
                 formData.append('year', '');
                 formData.append('make', '');
                 formData.append('model', '');
                 formData.append('mileage', '');
-                formData.append('damageInfo', 'Exit Intent - No Assessment');
+                formData.append('damageInfo', 'Exit Intent - Supportive Signup');
                 formData.append('currentValue', '');
                 formData.append('minValue', '');
                 formData.append('maxValue', '');
@@ -1600,32 +1649,40 @@
                 });
 
                 if (response.ok) {
-                    console.log("✅ Exit intent email saved to Google Sheets");
+                    console.log("✅ Supportive exit intent signup saved to Google Sheets");
                     return true;
                 } else {
                     throw new Error(`HTTP ${response.status}`);
                 }
             } catch (error) {
-                console.log("❌ Google Sheets error for exit intent:", error);
+                console.log("❌ Google Sheets error for supportive exit intent:", error);
                 return false;
             }
         }
 
         async function addExitIntentToMailChimp(email) {
-            console.log('📧 Adding exit intent email to MailChimp:', email);
+            console.log('📧 Adding supportive exit intent signup to MailChimp via API:', email);
             
             try {
                 const formData = new FormData();
                 formData.append('u', MAILCHIMP_USER_ID);
                 formData.append('id', MAILCHIMP_LIST_ID);
                 formData.append('EMAIL', email);
-                formData.append('PRIORITY', 'Exit-Intent');
+                formData.append('PRIORITY', 'Exit-Intent-Supportive');
+
+                // Submit to MailChimp using hidden iframe (no redirect)
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.name = 'mailchimpExitFrame';
+                document.body.appendChild(iframe);
 
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = MAILCHIMP_FORM_ACTION;
+                form.target = 'mailchimpExitFrame';
                 form.style.display = 'none';
 
+                // Add all form data as hidden inputs
                 for (let [key, value] of formData.entries()) {
                     const input = document.createElement('input');
                     input.type = 'hidden';
@@ -1636,15 +1693,19 @@
 
                 document.body.appendChild(form);
                 form.submit();
+
+                // Clean up
                 setTimeout(() => {
                     if (form.parentNode) document.body.removeChild(form);
-                }, 1000);
+                    if (iframe.parentNode) document.body.removeChild(iframe);
+                }, 2000);
 
-                console.log('✅ Exit intent email submitted');
+                console.log('✅ Exit intent MailChimp submission successful (supportive approach)');
                 return true;
+
             } catch (error) {
                 console.log('❌ MailChimp submission failed:', error);
-                throw error;
+                return false;
             }
         }
 
@@ -1653,14 +1714,14 @@
         let mouseLeaveCount = 0;
         let formCompleted = false; // Track if user completed the form
 
-        // Detect when mouse leaves viewport (exit intent)
+        // Detect when mouse leaves viewport (exit intent) - More sensitive
         document.addEventListener('mouseleave', function(e) {
             // Only trigger if mouse is leaving from the top of the page AND form not completed
             if (e.clientY <= 0 && !exitIntentShown && !formCompleted) {
                 mouseLeaveCount++;
                 
-                // Show popup after 2nd attempt to leave (less annoying)
-                if (mouseLeaveCount >= 2) {
+                // Show popup on first attempt to leave (more sensitive)
+                if (mouseLeaveCount >= 1) {
                     showExitIntentPopup();
                 }
             }
@@ -1671,7 +1732,7 @@
             if (exitIntentShown) return;
             
             exitIntentShown = true;
-            console.log('🚪 Exit intent detected - showing popup');
+            console.log('🚪 Exit intent detected - showing supportive signup popup');
             
             const popup = document.getElementById('exitIntentPopup');
             if (popup) {
@@ -1687,17 +1748,18 @@
 
         // Close exit intent popup
         function closeExitPopup() {
-            console.log('❌ Exit popup closed');
+            console.log('❌ Exit popup closed manually');
             const popup = document.getElementById('exitIntentPopup');
             if (popup) {
                 popup.style.display = 'none';
+                console.log('🚪 Exit intent popup hidden');
             }
         }
 
         // Handle exit popup form submission
         async function submitExitPopupForm(event) {
             event.preventDefault();
-            console.log('📧 Exit popup form submitted');
+            console.log('📧 Exit popup form submitted - will show post-submission popup and redirect to website');
             
             const emailInput = document.getElementById('exitPopupEmail');
             const email = emailInput ? emailInput.value.trim() : '';
@@ -1727,20 +1789,20 @@
                     popup.innerHTML = `
                         <div class="exit-intent-popup">
                             <div class="exit-popup-header">
-                                <h2 class="exit-popup-title">Guide Sent Successfully!</h2>
-                                <p class="exit-popup-subtitle">Your recovery rights information is on the way</p>
+                                <h2 class="exit-popup-title">Your Settlement is Secured!</h2>
+                                <p class="exit-popup-subtitle">We're protecting your compensation rights</p>
                             </div>
                             <div class="exit-popup-content">
                                 <div style="text-align: center; padding: 20px;">
                                     <div style="font-size: 48px; margin-bottom: 16px;">✓</div>
                                     <p style="color: #059669; font-weight: 600; margin-bottom: 8px;">
-                                        Recovery rights guide sent to ${email}
+                                        Settlement protection sent to ${email}
                                     </p>
                                     <p style="color: #6b7280; font-size: 14px; margin-bottom: 20px;">
-                                        Check your inbox (and spam folder) for your free vehicle value recovery guide.
+                                        Check your inbox (and spam folder) for your settlement protection information and next steps.
                                     </p>
                                     <button onclick="closeExitPopup()" class="exit-popup-btn">
-                                        Continue to Calculator
+                                        Continue to Recovery Calculator
                                     </button>
                                 </div>
                             </div>
@@ -1757,17 +1819,17 @@
                 
             } catch (error) {
                 console.error('❌ Exit popup submission failed:', error);
-                alert('Sorry, there was an error. Please try again or contact us directly.');
+                // Handle error silently - main center popup will still show success
             }
         }
 
-        // Close popup when clicking outside
+        // Close popup when clicking outside (only for exit intent popup)
         document.addEventListener('click', function(e) {
-            const popup = document.getElementById('exitIntentPopup');
-            const popupContent = document.querySelector('.exit-intent-popup');
+            const exitPopup = document.getElementById('exitIntentPopup');
+            const exitPopupContent = document.querySelector('.exit-intent-popup');
             
-            if (popup && popup.style.display === 'flex' && 
-                !popupContent.contains(e.target)) {
+            if (exitPopup && exitPopup.style.display === 'flex' && 
+                exitPopupContent && !exitPopupContent.contains(e.target)) {
                 closeExitPopup();
             }
         });
@@ -1779,9 +1841,168 @@
             }
         });
 
+        // POST-SUBMISSION POPUP FUNCTIONALITY
+        let postSubmissionPopupShown = false;
+
+        function startPostSubmissionTimer() {
+            console.log('⏰ Starting post-submission timer - popup in 60 seconds');
+            
+            setTimeout(() => {
+                if (formCompleted && !postSubmissionPopupShown) {
+                    showPostSubmissionPopup();
+                }
+            }, 60000); // 60 seconds after form submission
+        }
+
+        function showPostSubmissionPopup() {
+            if (postSubmissionPopupShown) {
+                console.log('❌ Post-submission popup already shown, skipping');
+                return;
+            }
+            
+            postSubmissionPopupShown = true;
+            console.log('📧 Post-submission popup triggered - showing email details and starting 8-second countdown');
+            
+            const popup = document.getElementById('postSubmissionPopup');
+            if (popup) {
+                popup.style.display = 'flex';
+                
+                // Add smooth animation class
+                const popupContent = popup.querySelector('.post-submission-popup');
+                if (popupContent) {
+                    setTimeout(() => {
+                        popupContent.classList.add('show');
+                    }, 50); // Small delay for smooth animation
+                }
+                
+                // Start post-submission countdown
+                startPostSubmissionCountdown();
+            } else {
+                console.log('❌ Post-submission popup element not found');
+            }
+        }
+
+        function startPostSubmissionCountdown() {
+            let seconds = 8; // Countdown for post-submission popup
+            const countdownElement = document.getElementById('postCountdown');
+            
+            console.log('⏰ Starting post-submission countdown - 8 seconds to redirect');
+            
+            const timer = setInterval(() => {
+                if (countdownElement) {
+                    countdownElement.textContent = seconds;
+                }
+                console.log(`⏰ Post-submission countdown: ${seconds} seconds remaining`);
+                seconds--;
+                
+                if (seconds < 0) {
+                    clearInterval(timer);
+                    console.log('🌐 Post-submission countdown complete - CALLING REDIRECT FUNCTION NOW');
+                    redirectToWebsite();
+                }
+            }, 1000);
+        }
+
+        function redirectToWebsite() {
+            console.log('🌐 REDIRECT FUNCTION CALLED - Forcing redirect to MyFairClaim.com');
+            
+            // Remove any existing popups first
+            const postPopup = document.getElementById('postSubmissionPopup');
+            const exitPopup = document.getElementById('exitIntentPopup');
+            
+            if (postPopup) {
+                postPopup.style.display = 'none';
+                console.log('📧 Post-submission popup hidden');
+            }
+            
+            if (exitPopup) {
+                exitPopup.style.display = 'none';
+                console.log('🚪 Exit intent popup hidden');
+            }
+            
+            // Show redirecting message on page
+            const body = document.body;
+            const redirectDiv = document.createElement('div');
+            redirectDiv.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(43, 108, 176, 0.95);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 20000;
+                font-size: 1.5rem;
+                font-weight: 600;
+            `;
+            redirectDiv.innerHTML = 'Redirecting to MyFairClaim.com...';
+            body.appendChild(redirectDiv);
+            
+            // Multiple redirect attempts with no delay
+            console.log('🌐 Attempting immediate redirect...');
+            
+            // Attempt 1: Direct redirect
+            try {
+                window.location.href = 'https://www.myfairclaim.com';
+                console.log('✅ Direct redirect attempted');
+            } catch (e1) {
+                console.log('❌ Direct redirect failed:', e1);
+                
+                // Attempt 2: Replace method
+                try {
+                    window.location.replace('https://www.myfairclaim.com');
+                    console.log('✅ Replace redirect attempted');
+                } catch (e2) {
+                    console.log('❌ Replace redirect failed:', e2);
+                    
+                    // Attempt 3: Window open
+                    try {
+                        window.open('https://www.myfairclaim.com', '_self');
+                        console.log('✅ Window open redirect attempted');
+                    } catch (e3) {
+                        console.log('❌ All redirect methods failed:', e3);
+                        
+                        // Final fallback: Show manual link
+                        redirectDiv.innerHTML = `
+                            <div style="text-align: center;">
+                                <p>Redirecting to MyFairClaim.com...</p>
+                                <p style="margin-top: 20px;">
+                                    <a href="https://www.myfairclaim.com" style="color: white; text-decoration: underline;">
+                                        Click here if not redirected automatically
+                                    </a>
+                                </p>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            
+            // Backup timer-based redirect
+            setTimeout(() => {
+                console.log('🔄 Backup timer redirect executing...');
+                window.location = 'https://www.myfairclaim.com';
+            }, 1000);
+        }
+
+        // Test function for manual redirect testing
+        function testRedirect() {
+            console.log('🧪 Manual redirect test initiated');
+            redirectToWebsite();
+        }
+
+        // Global function for easy testing
+        window.testRedirect = testRedirect;
+
         // Test that everything loaded
         console.log("✅ Script loaded successfully with integrations. Google Sheets ACTIVE!");
-        console.log("🚪 Exit intent functionality enabled - automatically disables after form completion");
+        console.log("🚪 Exit intent functionality enabled - supportive approach with 5-second redirect");
+        console.log("📧 Form submitters: 15-second wait → popup → 8-second countdown → redirect");
+        console.log("📧 Exit intent users: immediate thank you → 5-second countdown → redirect");
+        console.log("🧪 To test redirect manually, run: testRedirect() in console");
+        console.log("🌐 All popup closures (X button, escape, click outside) now redirect to MyFairClaim.com");
     </script>
 </body>
 </html>
