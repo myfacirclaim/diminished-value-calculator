@@ -331,43 +331,73 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            background: white;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
             border-radius: 12px;
-            padding: 12px 16px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 16px 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: 500;
+            gap: 12px;
+            font-size: 13px;
+            font-weight: 600;
             z-index: 1000;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #4b5563;
+            min-width: 280px;
+            transition: all 0.3s ease;
+        }
+
+        .system-status.loading {
+            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            animation: systemPulse 2s infinite;
+        }
+
+        .system-status.ready {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
         }
 
         .status-light {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             background: #ef4444;
             animation: pulse 2s infinite;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
         }
 
         .status-light.green {
             background: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
         }
 
         .status-light.yellow {
             background: #f59e0b;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+            animation: fastPulse 1s infinite;
         }
 
         @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fastPulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes systemPulse {
+            0% { box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 0 0 8px rgba(59, 130, 246, 0.1); }
+            100% { box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(59, 130, 246, 0.4); }
         }
 
         .status-text {
-            color: #374151;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
         /* EXIT INTENT POPUP STYLES */
@@ -676,7 +706,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="year">Model Year</label>
-                            <input type="number" id="year" min="1990" max="2025" required>
+                            <input type="number" id="year" min="1990" max="2025" placeholder="e.g., 2022" required>
                         </div>
                         <div class="form-group">
                             <label for="make">Make</label>
@@ -816,9 +846,9 @@
         // IMMEDIATE DEBUG TEST
         console.log("🔧 SCRIPT STARTING - Testing basic functionality");
         
-        // Try to update system status, but don't fail if it errors
+        // Supercomputer-style initialization sequence
         try {
-            updateSystemStatus('loading', 'Initializing systems...');
+            initializeSupercomputerSequence();
         } catch (e) {
             console.log('⚠️ System status not available yet, continuing...');
         }
@@ -837,11 +867,38 @@
         const EMAILJS_SERVICE_ID = window.ENV?.EMAILJS_SERVICE_ID || "DISABLED_USING_MAILCHIMP";
         const EMAILJS_TEMPLATE_ID = window.ENV?.EMAILJS_TEMPLATE_ID || "DISABLED_USING_MAILCHIMP";
 
-        // Initialize any remaining dependencies
-        console.log("📧 MailChimp configured for both lead capture and notifications");
+        // SUPERCOMPUTER INITIALIZATION SEQUENCE
+        function initializeSupercomputerSequence() {
+            const sequences = [
+                { status: 'loading', message: '🔧 INITIALIZING CORE SYSTEMS...', duration: 800 },
+                { status: 'loading', message: '📡 CONNECTING TO VEHICLE DATABASE...', duration: 600 },
+                { status: 'loading', message: '🧮 CALIBRATING DAMAGE ALGORITHMS...', duration: 700 },
+                { status: 'loading', message: '💰 LOADING MARKET VALUE MATRICES...', duration: 500 },
+                { status: 'loading', message: '🔍 ACTIVATING AI ANALYSIS ENGINE...', duration: 600 },
+                { status: 'loading', message: '🛡️ SECURING ENCRYPTED CHANNELS...', duration: 400 },
+                { status: 'loading', message: '⚡ OPTIMIZING CALCULATION PATHWAYS...', duration: 500 },
+                { status: 'ready', message: '✅ MYFAIRCLAIM SYSTEM ONLINE - READY FOR ASSESSMENT', duration: 2000 }
+            ];
 
-        // Set default year
-        document.getElementById('year').value = new Date().getFullYear();
+            let currentStep = 0;
+            
+            function runNextStep() {
+                if (currentStep < sequences.length) {
+                    const step = sequences[currentStep];
+                    updateSystemStatus(step.status, step.message);
+                    
+                    setTimeout(() => {
+                        currentStep++;
+                        runNextStep();
+                    }, step.duration);
+                }
+            }
+            
+            runNextStep();
+        }
+
+        // Leave year field blank - users should consciously select their vehicle year
+        // document.getElementById('year').value = new Date().getFullYear();
 
         // LOGO FALLBACK FUNCTION
         function showTextLogo() {
@@ -856,26 +913,30 @@
             }
         }
 
-        // SYSTEM STATUS INDICATOR - WITH NULL CHECKS
+        // SYSTEM STATUS INDICATOR - WITH NULL CHECKS AND SUPERCOMPUTER STYLING
         function updateSystemStatus(status, message) {
             const statusLight = document.getElementById('statusLight');
             const statusText = document.getElementById('statusText');
+            const statusContainer = document.getElementById('systemStatus');
             
             // Add null checks to prevent errors
-            if (!statusLight || !statusText) {
+            if (!statusLight || !statusText || !statusContainer) {
                 console.log('⚠️ System status elements not found, status:', message);
                 return;
             }
             
             // Remove existing classes
             statusLight.className = 'status-light';
+            statusContainer.className = 'system-status';
             
             switch(status) {
                 case 'loading':
                     statusLight.classList.add('yellow');
+                    statusContainer.classList.add('loading');
                     break;
                 case 'ready':
                     statusLight.classList.add('green');
+                    statusContainer.classList.add('ready');
                     break;
                 case 'error':
                     statusLight.classList.add('red');
@@ -1049,10 +1110,26 @@
             document.getElementById('valueRange').textContent = 
                 formatCurrency(result.minValue) + ' - ' + formatCurrency(result.maxValue);
             
-            // Show simplified details - removed Vehicle, Current Market Value, Damage Level, Vehicle Age, and Assessment Date
+            // Show simplified details - promote paid reports for maximizing recovery
             document.getElementById('resultDetails').innerHTML = 
-                '<div style="text-align: center; padding: 20px; color: #059669; font-weight: 500;">' +
-                'Professional assessment complete. A MyFairClaim specialist will contact you within 24 hours to discuss your claim options.' +
+                '<div style="text-align: center; padding: 20px;">' +
+                '<div style="color: #059669; font-weight: 600; font-size: 1.1rem; margin-bottom: 16px;">🎯 Maximize Your Recovery</div>' +
+                '<div style="color: #374151; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">' +
+                'Your estimate shows potential value, but our <strong>Quick Report</strong> and <strong>Deluxe Report</strong> provide the professional documentation and expert guidance needed to maximize your diminished value recovery from insurance companies.' +
+                '</div>' +
+                '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">' +
+                '<div style="background: #f0fdf4; border: 2px solid #10b981; border-radius: 8px; padding: 16px; text-align: center;">' +
+                '<div style="font-weight: 600; color: #059669; margin-bottom: 8px;">📋 Quick Report</div>' +
+                '<div style="font-size: 0.875rem; color: #374151;">Professional documentation for your claim</div>' +
+                '</div>' +
+                '<div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 16px; text-align: center;">' +
+                '<div style="font-weight: 600; color: #1e40af; margin-bottom: 8px;">⭐ Deluxe Report</div>' +
+                '<div style="font-size: 0.875rem; color: #374151;">Complete analysis + expert guidance</div>' +
+                '</div>' +
+                '</div>' +
+                '<div style="margin-top: 16px; font-size: 0.875rem; color: #6b7280;">' +
+                'A MyFairClaim specialist will contact you within 24 hours to discuss your report options.' +
+                '</div>' +
                 '</div>';
             
             // Show results section
@@ -1564,6 +1641,7 @@
         // Test that everything loaded
         console.log("✅ Script loaded successfully with integrations. Google Sheets ACTIVE!");
         console.log("🚪 Exit intent functionality enabled - automatically disables after form completion");
+        console.log("🤖 Supercomputer initialization sequence activated!");
     </script>
 </body>
 </html>
