@@ -30,10 +30,28 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
             color: white;
-            padding: 40px 30px;
+            padding: 20px 30px 15px 30px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.1;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
         }
 
         .header h1 {
@@ -54,33 +72,37 @@
         }
 
         .text-logo .logo-my {
-            font-size: 2.5rem;
+            font-size: 5rem;
             font-weight: 700;
             color: #ffffff;
             letter-spacing: -0.02em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .text-logo .logo-fair {
-            font-size: 2.5rem;
+            font-size: 5rem;
             font-weight: 700;
             color: #60a5fa;
             letter-spacing: -0.02em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .text-logo .logo-claim {
-            font-size: 2.5rem;
+            font-size: 5rem;
             font-weight: 700;
             color: #ffffff;
             letter-spacing: -0.02em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .logo-tagline {
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
-            margin-top: 4px;
+            margin-top: 12px;
             letter-spacing: 0.05em;
             text-transform: uppercase;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .form-content {
@@ -354,7 +376,15 @@
                 border-radius: 0;
             }
             
-            .header, .form-content {
+            .header {
+                padding: 15px 20px 10px 20px;
+            }
+            
+            .header .logo-container img {
+                max-height: 360px !important;
+            }
+            
+            .form-content {
                 padding: 24px 20px;
             }
             
@@ -377,11 +407,15 @@
             .text-logo .logo-my,
             .text-logo .logo-fair,
             .text-logo .logo-claim {
-                font-size: 2rem;
+                font-size: 4rem;
             }
             
             .logo-tagline {
-                font-size: 0.75rem;
+                font-size: 1.25rem;
+            }
+            
+            .header h1 {
+                font-size: 1.75rem;
             }
         }
     </style>
@@ -419,15 +453,17 @@
         -->
         
         <div class="header">
-            <div class="logo-container" style="margin-bottom: 20px;">
-                <img src="https://myfacirclaim.github.io/diminished-value-calculator/My%20Fair%20Claims%20-%20Logo-01.png" 
-                     alt="MyFairClaim - Professional Diminished Value Experts" 
-                     style="max-height: 80px; width: auto; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;"
-                     onload="this.style.opacity='1';"
-                     onerror="this.style.display='none'; showTextLogo();">
+            <div class="header-content">
+                <div class="logo-container" style="margin-bottom: 15px;">
+                    <img src="https://myfacirclaim.github.io/diminished-value-calculator/My%20Fair%20Claims%20-%20Logo-01.png" 
+                         alt="MyFairClaim - Professional Diminished Value Experts" 
+                         style="max-height: 480px; width: auto; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));"
+                         onload="this.style.opacity='1';"
+                         onerror="this.style.display='none'; showTextLogo();">
+                </div>
+                <h1>Professional Diminished Value Assessment</h1>
+                <p>Industry-standard evaluation for insurance claims and legal proceedings</p>
             </div>
-            <h1>Professional Diminished Value Assessment</h1>
-            <p>Industry-standard evaluation for insurance claims</p>
         </div>
 
         <div class="form-content">
@@ -593,7 +629,7 @@
             const logoContainer = document.querySelector('.logo-container');
             if (logoContainer) {
                 logoContainer.innerHTML = `
-                    <div class="text-logo">
+                    <div class="text-logo" style="margin-bottom: 10px;">
                         <span class="logo-my">My</span><span class="logo-fair">Fair</span><span class="logo-claim">Claim</span>
                         <div class="logo-tagline">Professional Diminished Value Experts</div>
                     </div>
