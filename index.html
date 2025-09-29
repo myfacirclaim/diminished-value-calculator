@@ -965,7 +965,7 @@
 
         // INTEGRATION CONFIGURATION
         // ✅ GOOGLE SHEETS CONFIGURED - Will save all assessment data
-        const GOOGLE_SHEETS_URL = window.ENV?.GOOGLE_SHEETS_URL || "https://script.google.com/macros/s/AKfycby934QwGxoDSZvcjA0WUTTtOvBsX1sbCdiItvluFdm8b0qjJPl8IrHOODZIKYW6ZagEEw/exec";
+        const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbza-PP7-kquhP2C04KfjIa9VnPXv8uRBSvCPUF38qn4CGE7ZGTYQBtRmNc6EWTPPfSNtw/exec";
         
         // ✅ MAILCHIMP CONFIGURED - Will handle lead capture and notifications  
         const MAILCHIMP_FORM_ACTION = "https://myfairclaim.us13.list-manage.com/subscribe/post";
@@ -1029,12 +1029,24 @@
             console.log("✅ Tier selection completed");
         }
 
+        // GENERATE UNIQUE IDENTIFIER
+        function generateUniqueId() {
+            const timestamp = Date.now().toString(36); // Convert timestamp to base36
+            const randomString = Math.random().toString(36).substring(2, 8); // Random 6 chars
+            const identifier = `MFC-${timestamp}-${randomString}`.toUpperCase();
+            console.log("🆔 Generated unique identifier:", identifier);
+            return identifier;
+        }
+
         // SIMPLE FORM SUBMISSION
         document.getElementById('calculatorForm').addEventListener('submit', function(e) {
             e.preventDefault();
             console.log("📋 Form submitted");
             
             try {
+                // Generate unique identifier for this submission
+                const uniqueId = generateUniqueId();
+                
                 // Get form values
                 const customerName = document.getElementById('customerName').value;
                 const customerEmail = document.getElementById('customerEmail').value;
@@ -1046,7 +1058,7 @@
                 const severityElement = document.querySelector('input[name="severity"]:checked');
                 
                 console.log("📝 Form values:", {
-                    customerName, customerEmail, customerPhone,
+                    uniqueId, customerName, customerEmail, customerPhone,
                     year, make, model, mileage,
                     severity: severityElement ? severityElement.value : 'NONE'
                 });
@@ -1061,7 +1073,7 @@
                 console.log("✅ Validation passed, calculating...");
                 
                 // SIMPLE CALCULATION
-                const result = calculateValue(year, make, model, mileage, severity, customerName, customerEmail, customerPhone);
+                const result = calculateValue(year, make, model, mileage, severity, customerName, customerEmail, customerPhone, uniqueId);
                 console.log("🧮 Calculation result:", result);
                 
                 // SIMPLE DISPLAY
@@ -1084,7 +1096,7 @@
             }
         });
 
-        function calculateValue(year, make, model, mileage, severity, customerName, customerEmail, customerPhone) {
+        function calculateValue(year, make, model, mileage, severity, customerName, customerEmail, customerPhone, uniqueId) {
             console.log("🧮 Starting calculation...");
             
             const currentYear = new Date().getFullYear();
@@ -1133,6 +1145,7 @@
             console.log("💵 Final diminished value range:", minValue, "to", maxValue);
             
             return {
+                uniqueId: uniqueId,
                 minValue: minValue,
                 maxValue: maxValue,
                 currentValue: Math.round(currentValue),
@@ -1273,14 +1286,9 @@
         async function saveToGoogleSheets(result) {
             console.log("📊 Saving to Google Sheets...");
             
-            if (GOOGLE_SHEETS_URL.includes("YOUR_GOOGLE_APPS_SCRIPT_ID")) {
-                console.log("⚠️ Google Sheets not configured - skipping");
-                showNotification("⚠️ Google Sheets integration not configured", "warning");
-                return false;
-            }
-            
             try {
                 const formData = new FormData();
+                formData.append('uniqueId', result.uniqueId);
                 formData.append('customerName', result.customerName);
                 formData.append('customerEmail', result.customerEmail);
                 formData.append('customerPhone', result.customerPhone);
@@ -1330,6 +1338,7 @@
                 formData.append('PHONE', result.customerPhone); // Add phone number
                 
                 // Custom fields we created
+                formData.append('UNIQUEID', result.uniqueId); // Add unique identifier
                 formData.append('VEHICLE', `${result.year} ${result.make} ${result.model}`);
                 formData.append('DAMAGE', `Tier ${result.severity} - ${result.tierName}`);
                 formData.append('MAXVALUE', result.maxValue);
@@ -1619,13 +1628,12 @@
         async function saveExitIntentToGoogleSheets(email) {
             console.log("📊 Saving supportive exit intent signup to Google Sheets...");
             
-            if (GOOGLE_SHEETS_URL.includes("YOUR_GOOGLE_APPS_SCRIPT_ID")) {
-                console.log("⚠️ Google Sheets not configured - skipping");
-                return false;
-            }
-            
             try {
+                // Generate unique ID for exit intent lead
+                const exitIntentId = generateUniqueId();
+                
                 const formData = new FormData();
+                formData.append('uniqueId', exitIntentId);
                 formData.append('customerEmail', email);
                 formData.append('leadSource', 'Exit Intent - Ready When You Are');
                 formData.append('leadType', 'Email Only - Supportive Approach');
@@ -1649,7 +1657,7 @@
                 });
 
                 if (response.ok) {
-                    console.log("✅ Supportive exit intent signup saved to Google Sheets");
+                    console.log("✅ Supportive exit intent signup saved to Google Sheets with ID:", exitIntentId);
                     return true;
                 } else {
                     throw new Error(`HTTP ${response.status}`);
@@ -1664,10 +1672,14 @@
             console.log('📧 Adding supportive exit intent signup to MailChimp via API:', email);
             
             try {
+                // Generate unique ID for exit intent lead
+                const exitIntentId = generateUniqueId();
+                
                 const formData = new FormData();
                 formData.append('u', MAILCHIMP_USER_ID);
                 formData.append('id', MAILCHIMP_LIST_ID);
                 formData.append('EMAIL', email);
+                formData.append('UNIQUEID', exitIntentId); // Add unique identifier
                 formData.append('PRIORITY', 'Exit-Intent-Supportive');
 
                 // Submit to MailChimp using hidden iframe (no redirect)
@@ -1700,7 +1712,7 @@
                     if (iframe.parentNode) document.body.removeChild(iframe);
                 }, 2000);
 
-                console.log('✅ Exit intent MailChimp submission successful (supportive approach)');
+                console.log('✅ Exit intent MailChimp submission successful with ID:', exitIntentId);
                 return true;
 
             } catch (error) {
@@ -1997,7 +2009,8 @@
         window.testRedirect = testRedirect;
 
         // Test that everything loaded
-        console.log("✅ Script loaded successfully with integrations. Google Sheets ACTIVE!");
+        console.log("✅ Script loaded successfully with integrations. Google Sheets FULLY ACTIVE!");
+        console.log("📊 Google Sheets URL:", GOOGLE_SHEETS_URL);
         console.log("🚪 Exit intent functionality enabled - supportive approach with 5-second redirect");
         console.log("📧 Form submitters: 15-second wait → popup → 8-second countdown → redirect");
         console.log("📧 Exit intent users: immediate thank you → 5-second countdown → redirect");
